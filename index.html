@@ -15,70 +15,44 @@
     --text-muted: #6b7280;
     --text-dim: #3a4055;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+  /* SYNC BAR */
+  .sync-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 200; height: 3px; background: transparent; }
+  .sync-bar.syncing { background: linear-gradient(90deg,#3b82f6,#a855f7,#3b82f6); background-size:200%; animation: syncAnim 1.2s linear infinite; }
+  .sync-bar.saved  { background: #22c55e; animation: none; }
+  .sync-bar.error  { background: #ef4444; animation: none; }
+  @keyframes syncAnim { 0%{background-position:0%} 100%{background-position:200%} }
+  .sync-label { position: fixed; top: 6px; right: 10px; z-index: 201; font-size: 10px; font-weight: 600; color: var(--text-muted); opacity: 0; transition: opacity 0.3s; }
+  .sync-label.visible { opacity: 1; }
 
-  /* ── PIN SCREEN ── */
-  #pin-screen {
-    position: fixed; inset: 0; z-index: 999;
-    background: var(--bg);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 32px 24px;
-  }
+  /* PIN */
+  #pin-screen { position: fixed; inset: 0; z-index: 999; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 24px; }
   #pin-screen.hidden { display: none; }
-  .pin-icon { font-size: 42px; margin-bottom: 12px; }
+  .pin-icon  { font-size: 42px; margin-bottom: 12px; }
   .pin-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.3px; }
   .pin-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 32px; text-align: center; }
   .pin-dots { display: flex; gap: 14px; margin-bottom: 32px; }
-  .pin-dot {
-    width: 16px; height: 16px; border-radius: 50%;
-    border: 2px solid var(--border); background: transparent;
-    transition: background 0.15s, border-color 0.15s;
-  }
+  .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--border); background: transparent; transition: background 0.15s, border-color 0.15s; }
   .pin-dot.filled { background: #3b82f6; border-color: #3b82f6; }
   .pin-dot.error  { background: #ef4444; border-color: #ef4444; }
   .pin-grid { display: grid; grid-template-columns: repeat(3, 72px); gap: 12px; }
-  .pin-btn {
-    width: 72px; height: 72px; border-radius: 50%;
-    background: var(--surface); border: 1px solid var(--border);
-    color: var(--text); font-family: 'DM Sans', sans-serif;
-    font-size: 22px; font-weight: 600; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.12s, transform 0.1s; user-select: none;
-  }
+  .pin-btn { width: 72px; height: 72px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 22px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.12s, transform 0.1s; user-select: none; }
   .pin-btn:active { background: var(--surface2); transform: scale(0.93); }
   .pin-btn.del { font-size: 18px; color: var(--text-muted); }
   .pin-btn.empty { background: transparent; border-color: transparent; pointer-events: none; }
   .pin-error { margin-top: 18px; font-size: 13px; color: #ef4444; font-weight: 500; min-height: 18px; text-align: center; }
   .pin-change-link { margin-top: 24px; font-size: 12px; color: var(--text-dim); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
 
-  /* ── CHANGE PIN MODAL ── */
-  #change-pin-modal {
-    position: fixed; inset: 0; z-index: 1000;
-    background: rgba(0,0,0,0.75);
-    display: flex; align-items: center; justify-content: center; padding: 24px;
-  }
+  /* CHANGE PIN MODAL */
+  #change-pin-modal { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.75); display: flex; align-items: center; justify-content: center; padding: 24px; }
   #change-pin-modal.hidden { display: none; }
   .modal-box { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; width: 100%; max-width: 320px; }
   .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
-  .modal-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
+  .modal-sub   { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
   .modal-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); margin: 12px 0 5px; }
-  .modal-label:first-of-type { margin-top: 0; }
-  .modal-input {
-    width: 100%; background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 8px; color: var(--text); font-family: 'DM Sans', sans-serif;
-    font-size: 20px; font-weight: 700; padding: 10px 14px;
-    letter-spacing: 8px; outline: none; text-align: center;
-  }
+  .modal-input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 20px; font-weight: 700; padding: 10px 14px; letter-spacing: 8px; outline: none; text-align: center; }
   .modal-input:focus { border-color: #3b82f6; }
   .modal-btns { display: flex; gap: 10px; margin-top: 16px; }
   .modal-btn { flex: 1; padding: 10px; border-radius: 8px; border: none; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; }
@@ -86,151 +60,109 @@
   .modal-btn.cancel  { background: var(--surface2); color: var(--text-muted); }
   .modal-error { font-size: 12px; color: #ef4444; margin-top: 8px; min-height: 16px; }
 
-  /* ── APP HEADER ── */
-  .app-header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 16px 10px;
-    position: sticky; top: 0; z-index: 100;
-  }
+  /* LOADING */
+  #loading-screen { position: fixed; inset: 0; z-index: 500; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+  #loading-screen.hidden { display: none; }
+  .loading-spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: #3b82f6; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { font-size: 13px; color: var(--text-muted); }
+
+  /* HEADER */
+  .app-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 16px 10px; position: sticky; top: 0; z-index: 100; }
   .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
-  .app-title { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
+  .app-title    { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
   .app-subtitle { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-
-  /* WINDOW TOGGLE */
   .window-toggle { display: flex; gap: 4px; }
-  .win-btn {
-    font-size: 11px; font-weight: 600; padding: 4px 10px;
-    border-radius: 20px; border: 1px solid var(--border);
-    background: transparent; color: var(--text-muted);
-    cursor: pointer; transition: all 0.15s; white-space: nowrap;
-  }
+  .win-btn { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; transition: all 0.15s; }
   .win-btn.active { background: #3b82f6; border-color: #3b82f6; color: white; }
-
   .legend { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
   .legend-chip { display: flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 500; color: var(--text-muted); background: var(--surface2); border-radius: 20px; padding: 3px 8px; }
   .legend-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-
   .progress-bar { background: var(--surface2); border-radius: 4px; height: 3px; margin-top: 10px; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #a855f7); border-radius: 4px; transition: width 0.4s ease; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg,#3b82f6,#a855f7); border-radius: 4px; transition: width 0.4s ease; }
   .progress-label { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
 
-  /* ── SCROLL BODY ── */
+  /* SCROLL */
   .scroll-body { padding: 10px 12px 80px; }
 
   /* MONTH HEADER */
-  .month-header {
-    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
-    text-transform: uppercase; color: var(--text-muted);
-    padding: 14px 4px 6px;
-    display: flex; align-items: center; gap: 8px;
-  }
+  .month-header { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); padding: 14px 4px 6px; display: flex; align-items: center; gap: 8px; }
   .month-header::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-  /* WEEKEND CARD */
-  .weekend-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px; margin-bottom: 8px;
-    overflow: hidden; transition: border-color 0.2s, opacity 0.3s;
-  }
+  /* NOW MARKER */
+  .now-marker { display: flex; align-items: center; gap: 8px; padding: 6px 4px; margin-bottom: 6px; }
+  .now-dot  { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; flex-shrink: 0; box-shadow: 0 0 6px #22c55e88; }
+  .now-label { font-size: 11px; color: #22c55e; font-weight: 600; letter-spacing: 0.5px; }
+  .now-line  { flex: 1; height: 1px; background: #22c55e44; }
+
+  /* CARDS */
+  .weekend-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 8px; overflow: hidden; transition: border-color 0.2s, opacity 0.3s; }
   .weekend-card.past { opacity: 0.38; }
   .weekend-card.today-week { border-color: #3b82f644; }
   .weekend-card.expanded { border-color: #3b82f6; opacity: 1 !important; }
-
-  .card-header {
-    display: flex; align-items: center; gap: 10px;
-    padding: 11px 13px; cursor: pointer; user-select: none;
-  }
+  .card-header { display: flex; align-items: center; gap: 10px; padding: 11px 13px; cursor: pointer; user-select: none; }
   .cat-stripe { width: 4px; height: 36px; border-radius: 4px; flex-shrink: 0; background: #374151; transition: background 0.2s; }
   .card-dates { flex: 1; min-width: 0; }
   .card-weekend-label { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .card-date-range { font-size: 11px; color: var(--text-muted); font-family: 'DM Mono', monospace; margin-top: 1px; }
   .past .card-weekend-label { color: var(--text-muted); }
-
   .card-badges { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
   .cat-badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
   .dani-badge { font-size: 15px; cursor: pointer; line-height: 1; transition: transform 0.15s; }
   .dani-badge:active { transform: scale(0.85); }
   .chevron { font-size: 10px; color: var(--text-dim); transition: transform 0.2s; flex-shrink: 0; }
   .expanded .chevron { transform: rotate(180deg); }
-
-  /* NOW MARKER */
-  .now-marker {
-    display: flex; align-items: center; gap: 8px;
-    padding: 6px 4px; margin-bottom: 6px;
-  }
-  .now-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; flex-shrink: 0; box-shadow: 0 0 6px #22c55e88; }
-  .now-label { font-size: 11px; color: #22c55e; font-weight: 600; letter-spacing: 0.5px; }
-  .now-line { flex: 1; height: 1px; background: #22c55e44; }
-
-  /* CARD BODY */
   .card-body { display: none; padding: 0 13px 13px; border-top: 1px solid var(--border); }
   .expanded .card-body { display: block; }
   .field-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); margin: 12px 0 5px; }
-
-  select, textarea {
-    width: 100%; background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 8px; color: var(--text); font-family: 'DM Sans', sans-serif;
-    font-size: 13px; padding: 8px 10px; outline: none;
-    appearance: none; -webkit-appearance: none;
-  }
+  select, textarea { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 8px 10px; outline: none; appearance: none; -webkit-appearance: none; }
   select:focus, textarea:focus { border-color: #3b82f6; }
   select option { background: #1a1d27; }
   textarea { resize: none; height: 60px; line-height: 1.4; }
   textarea::placeholder { color: var(--text-dim); }
-
-  .dani-row {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-top: 12px; padding: 8px 10px;
-    background: var(--surface2); border-radius: 8px; cursor: pointer;
-  }
+  .dani-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; padding: 8px 10px; background: var(--surface2); border-radius: 8px; cursor: pointer; }
   .dani-row-label { font-size: 12px; color: var(--text-muted); }
-  .dani-toggle { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; }
+  .dani-toggle { font-size: 12px; font-weight: 600; }
   .dani-toggle.yes { color: #22c55e; }
   .dani-toggle.no  { color: var(--text-dim); }
   .dani-toggle.pending { color: #f59e0b; }
 
   /* CATEGORY COLORS */
-  .cat-free      { background: #14532d; color: #4ade80; }
-  .cat-family    { background: #1e3a8a; color: #93c5fd; }
-  .cat-trip      { background: #581c87; color: #d8b4fe; }
-  .cat-work      { background: #78350f; color: #fcd34d; }
-  .cat-home      { background: #7f1d1d; color: #fca5a5; }
-  .cat-visitors  { background: #164e63; color: #67e8f9; }
-  .cat-hockey    { background: #7c2d12; color: #fdba74; }
-  .cat-holiday   { background: #831843; color: #f9a8d4; }
-  .cat-pto       { background: #365314; color: #bef264; }
-  .cat-none-badge { background: var(--surface2); color: var(--text-muted); }
+  .cat-free      { background:#14532d; color:#4ade80; }
+  .cat-family    { background:#1e3a8a; color:#93c5fd; }
+  .cat-trip      { background:#581c87; color:#d8b4fe; }
+  .cat-work      { background:#78350f; color:#fcd34d; }
+  .cat-home      { background:#7f1d1d; color:#fca5a5; }
+  .cat-visitors  { background:#164e63; color:#67e8f9; }
+  .cat-hockey    { background:#7c2d12; color:#fdba74; }
+  .cat-holiday   { background:#831843; color:#f9a8d4; }
+  .cat-pto       { background:#365314; color:#bef264; }
+  .cat-none-badge { background:var(--surface2); color:var(--text-muted); }
 
   /* SUMMARY BAR */
-  .summary-bar {
-    position: fixed; bottom: 0; left: 0; right: 0;
-    background: var(--surface); border-top: 1px solid var(--border);
-    padding: 8px 16px 10px;
-    display: flex; justify-content: space-around; z-index: 100;
-  }
+  .summary-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border); padding: 8px 16px 10px; display: flex; justify-content: space-around; z-index: 100; }
   .sum-item { text-align: center; }
-  .sum-num { font-size: 18px; font-weight: 700; }
+  .sum-num  { font-size: 18px; font-weight: 700; }
   .sum-label { color: var(--text-muted); font-size: 10px; margin-top: 1px; }
-  .sum-num.green { color: #22c55e; }
-  .sum-num.blue  { color: #3b82f6; }
-  .sum-num.amber { color: #f59e0b; }
+  .sum-num.green  { color: #22c55e; }
+  .sum-num.blue   { color: #3b82f6; }
+  .sum-num.amber  { color: #f59e0b; }
   .sum-num.purple { color: #a855f7; }
 </style>
 </head>
 <body>
 
-<!-- PIN SCREEN -->
+<div class="sync-bar" id="syncBar"></div>
+<div class="sync-label" id="syncLabel"></div>
+
+<!-- PIN -->
 <div id="pin-screen">
   <div class="pin-icon">📅</div>
   <div class="pin-title">Weekend Planner</div>
   <div class="pin-subtitle">Enter your 4-digit PIN to continue</div>
   <div class="pin-dots">
-    <div class="pin-dot" id="d0"></div>
-    <div class="pin-dot" id="d1"></div>
-    <div class="pin-dot" id="d2"></div>
-    <div class="pin-dot" id="d3"></div>
+    <div class="pin-dot" id="d0"></div><div class="pin-dot" id="d1"></div>
+    <div class="pin-dot" id="d2"></div><div class="pin-dot" id="d3"></div>
   </div>
   <div class="pin-grid">
     <button class="pin-btn" onclick="pinPress('1')">1</button>
@@ -267,6 +199,12 @@
   </div>
 </div>
 
+<!-- LOADING -->
+<div id="loading-screen" class="hidden">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Connecting to sync...</div>
+</div>
+
 <!-- APP -->
 <div class="app-header">
   <div class="header-top">
@@ -294,285 +232,248 @@
   <div class="sum-item"><div class="sum-num purple" id="sumLeft">—</div><div class="sum-label">Open</div></div>
 </div>
 
-<script>
-// ── PIN ──────────────────────────────────────────────────────
-const DEFAULT_PIN = '7903';
+<script type="module">
+import { initializeApp }                                    from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+import { getDatabase, ref, onValue, update, get }          from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+
+// ── CONFIG ────────────────────────────────────────────────
+const firebaseConfig = {
+  apiKey:            "AIzaSyBBV95sFxG0BK4faTgh4LExM7cVwUzDRso",
+  authDomain:        "weekend-planner-16877.firebaseapp.com",
+  databaseURL:       "https://weekend-planner-16877-default-rtdb.firebaseio.com",
+  projectId:         "weekend-planner-16877",
+  storageBucket:     "weekend-planner-16877.firebasestorage.app",
+  messagingSenderId: "383957604246",
+  appId:             "1:383957604246:web:3998be662fe8f78f28afb7"
+};
+const fbApp = initializeApp(firebaseConfig);
+const db = getDatabase(fbApp);
+const weekendsRef = ref(db, 'weekends');
+
+// ── CONSTANTS ─────────────────────────────────────────────
+const DEFAULT_PIN  = '7903';
+const CATEGORIES   = [
+  { key:'none',     label:'Unplanned',    color:'#374151' },
+  { key:'free',     label:'Free',         color:'#22c55e' },
+  { key:'family',   label:'Family',       color:'#3b82f6' },
+  { key:'trip',     label:'Trip/Travel',  color:'#a855f7' },
+  { key:'work',     label:'Work Event',   color:'#f59e0b' },
+  { key:'home',     label:'Home Project', color:'#ef4444' },
+  { key:'visitors', label:'Visitors',     color:'#06b6d4' },
+  { key:'hockey',   label:'Hockey',       color:'#f97316' },
+  { key:'holiday',  label:'Holiday',      color:'#ec4899' },
+  { key:'pto',      label:'PTO',          color:'#84cc16' },
+];
+const DANI_STATES  = [
+  { key:'no',      label:'❌ Not yet',         cls:'no'      },
+  { key:'pending', label:'⏳ Need to discuss', cls:'pending' },
+  { key:'yes',     label:'✅ Dani knows',       cls:'yes'     },
+];
+const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTHS_FULL  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const SEEDS = {
+  '2026-05-21': { cat:'work',    note:'Caleb Gustafson Scholarship Ceremony – Ellsworth HS ($250 check needed)', dani:'yes'     },
+  '2026-07-02': { cat:'holiday', note:'July 4th weekend',                                                         dani:'yes'     },
+  '2026-07-06': { cat:'pto',     note:'PTO – July 7–10',                                                          dani:'yes'     },
+  '2026-07-23': { cat:'work',    note:'PAA Golf Outing – July 27',                                                dani:'pending' },
+  '2026-08-13': { cat:'work',    note:'Pharm Tour – August 15 (Barabrew party bus, farm visits)',                 dani:'pending' },
+  '2026-08-20': { cat:'pto',     note:"PTO Aug 20–21 · Dani's birthday Aug 29",                                   dani:'yes'     },
+  '2026-11-05': { cat:'family',  note:"Matt's birthday – November 9",                                             dani:'yes'     },
+  '2026-12-24': { cat:'holiday', note:'Christmas Eve / Christmas',                                                dani:'yes'     },
+  '2026-12-31': { cat:'holiday', note:"New Year's Eve",                                                           dani:'yes'     },
+};
+
+// ── STATE ─────────────────────────────────────────────────
+const urlParams  = new URLSearchParams(window.location.search);
+const tvMode     = urlParams.get('tv') === '1';
+let pinLocked    = true;
+let pinEntry     = '';
+let windowMonths = 3;
+let DATA         = {};
+let WEEKENDS     = [];
+let saveTimer    = null;
+
+// ── PIN UNLOCK ────────────────────────────────────────────
 function getPin() { return localStorage.getItem('wp_pin') || DEFAULT_PIN; }
-function setPin(p) { localStorage.setItem('wp_pin', p); }
-
-let pinEntry = '';
-let pinLocked = true;
-
-// TV mode — bypass PIN if ?tv=1 is in the URL
-const urlParams = new URLSearchParams(window.location.search);
-const tvMode = urlParams.get('tv') === '1';
+function setPin(p){ localStorage.setItem('wp_pin', p); }
 
 if (tvMode || sessionStorage.getItem('wp_unlocked') === '1') {
   pinLocked = false;
   document.getElementById('pin-screen').classList.add('hidden');
 }
 
-function updateDots(error = false) {
-  for (let i = 0; i < 4; i++) {
-    const dot = document.getElementById('d' + i);
-    dot.classList.toggle('filled', i < pinEntry.length && !error);
-    dot.classList.toggle('error', error);
+function updateDots(error=false) {
+  for (let i=0;i<4;i++) {
+    const d = document.getElementById('d'+i);
+    d.classList.toggle('filled', i < pinEntry.length && !error);
+    d.classList.toggle('error',  error);
   }
 }
-function pinPress(digit) {
+
+window.pinPress = digit => {
   if (pinEntry.length >= 4) return;
   pinEntry += digit;
   updateDots();
   document.getElementById('pin-error').textContent = '';
-  if (pinEntry.length === 4) setTimeout(() => checkPin(), 120);
-}
-function pinDelete() {
-  pinEntry = pinEntry.slice(0, -1);
+  if (pinEntry.length === 4) setTimeout(checkPin, 120);
+};
+window.pinDelete = () => {
+  pinEntry = pinEntry.slice(0,-1);
   updateDots();
   document.getElementById('pin-error').textContent = '';
-}
+};
 function checkPin() {
   if (pinEntry === getPin()) {
-    sessionStorage.setItem('wp_unlocked', '1');
+    sessionStorage.setItem('wp_unlocked','1');
     document.getElementById('pin-screen').classList.add('hidden');
     pinLocked = false;
     initApp();
   } else {
     updateDots(true);
     document.getElementById('pin-error').textContent = 'Incorrect PIN — try again';
-    setTimeout(() => { pinEntry = ''; updateDots(false); }, 800);
+    setTimeout(() => { pinEntry=''; updateDots(false); }, 800);
   }
 }
-function openChangePin() {
+window.openChangePin = () => {
   document.getElementById('cur-pin-input').value = '';
   document.getElementById('new-pin-input').value = '';
   document.getElementById('modal-error').textContent = '';
   document.getElementById('change-pin-modal').classList.remove('hidden');
-}
-function closeChangePin() { document.getElementById('change-pin-modal').classList.add('hidden'); }
-function confirmChangePin() {
+};
+window.closeChangePin = () => document.getElementById('change-pin-modal').classList.add('hidden');
+window.confirmChangePin = () => {
   const cur = document.getElementById('cur-pin-input').value.trim();
   const nw  = document.getElementById('new-pin-input').value.trim();
   const err = document.getElementById('modal-error');
-  if (cur !== getPin()) { err.textContent = 'Current PIN is incorrect.'; return; }
-  if (!/^\d{4}$/.test(nw)) { err.textContent = 'New PIN must be exactly 4 digits.'; return; }
+  if (cur !== getPin())      { err.textContent='Current PIN is incorrect.'; return; }
+  if (!/^\d{4}$/.test(nw))  { err.textContent='New PIN must be exactly 4 digits.'; return; }
   setPin(nw);
-  closeChangePin();
-  const pe = document.getElementById('pin-error');
-  pe.style.color = '#22c55e';
-  pe.textContent = 'PIN updated ✓';
-  setTimeout(() => { pe.style.color = ''; pe.textContent = ''; }, 2000);
-}
+  window.closeChangePin();
+  showSync('saved','✓ PIN updated');
+};
 document.addEventListener('keydown', e => {
   if (!pinLocked) return;
   if (document.getElementById('change-pin-modal').classList.contains('hidden')) {
-    if (e.key >= '0' && e.key <= '9') pinPress(e.key);
-    if (e.key === 'Backspace') pinDelete();
+    if (e.key>='0'&&e.key<='9') window.pinPress(e.key);
+    if (e.key==='Backspace')     window.pinDelete();
   }
 });
-// ── END PIN ───────────────────────────────────────────────────
 
-// ── CONSTANTS ────────────────────────────────────────────────
-const CATEGORIES = [
-  { key: 'none',     label: 'Unplanned',    color: '#374151' },
-  { key: 'free',     label: 'Free',         color: '#22c55e' },
-  { key: 'family',   label: 'Family',       color: '#3b82f6' },
-  { key: 'trip',     label: 'Trip/Travel',  color: '#a855f7' },
-  { key: 'work',     label: 'Work Event',   color: '#f59e0b' },
-  { key: 'home',     label: 'Home Project', color: '#ef4444' },
-  { key: 'visitors', label: 'Visitors',     color: '#06b6d4' },
-  { key: 'hockey',   label: 'Hockey',       color: '#f97316' },
-  { key: 'holiday',  label: 'Holiday',      color: '#ec4899' },
-  { key: 'pto',      label: 'PTO',          color: '#84cc16' },
-];
-const DANI_STATES = [
-  { key: 'no',      label: '❌ Not yet',          cls: 'no' },
-  { key: 'pending', label: '⏳ Need to discuss',  cls: 'pending' },
-  { key: 'yes',     label: '✅ Dani knows',        cls: 'yes' },
-];
-const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
-// Known events to pre-seed (keyed by Thu ISO date)
-const SEEDS = {
-  '2026-05-21': { cat: 'work',    note: 'Caleb Gustafson Scholarship Ceremony – Ellsworth HS ($250 check needed)', dani: 'yes' },
-  '2026-07-02': { cat: 'holiday', note: 'July 4th weekend',                                                         dani: 'yes' },
-  '2026-07-06': { cat: 'pto',     note: 'PTO – July 7–10',                                                          dani: 'yes' },
-  '2026-07-23': { cat: 'work',    note: 'PAA Golf Outing – July 27',                                                dani: 'pending' },
-  '2026-08-13': { cat: 'work',    note: 'Pharm Tour – August 15 (Barabrew party bus, farm visits)',                 dani: 'pending' },
-  '2026-08-20': { cat: 'pto',     note: 'PTO Aug 20–21 · Dani\'s birthday Aug 29',                                  dani: 'yes' },
-  '2026-11-05': { cat: 'family',  note: 'Matt\'s birthday – November 9',                                            dani: 'yes' },
-  '2026-12-24': { cat: 'holiday', note: 'Christmas Eve / Christmas',                                                dani: 'yes' },
-  '2026-12-31': { cat: 'holiday', note: 'New Year\'s Eve',                                                          dani: 'yes' },
-};
-
-let windowMonths = 3;
-let DATA = {};
-let WEEKENDS = [];
-
-function loadData() {
-  try { const s = localStorage.getItem('wp_data'); if (s) return JSON.parse(s); } catch(e) {}
-  return {};
-}
-function saveData() {
-  try { localStorage.setItem('wp_data', JSON.stringify(DATA)); } catch(e) {}
+// ── SYNC INDICATOR ────────────────────────────────────────
+function showSync(state, msg) {
+  const bar   = document.getElementById('syncBar');
+  const label = document.getElementById('syncLabel');
+  bar.className   = 'sync-bar '+state;
+  label.textContent = msg;
+  label.className = 'sync-label visible';
+  if (state==='saved') setTimeout(()=>{ bar.className='sync-bar'; label.className='sync-label'; }, 2000);
 }
 
-function isoThursday(d) {
+// ── FIREBASE WRITE ────────────────────────────────────────
+function pushWeekend(key, val) {
+  showSync('syncing','Saving...');
+  const upd = {}; upd[`weekends/${key}`] = val;
+  update(ref(db), upd)
+    .then(()  => showSync('saved','✓ Synced to all devices'))
+    .catch(()  => showSync('error','⚠ Sync failed — check connection'));
+}
+function debouncePush(key, val) {
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => pushWeekend(key, val), 700);
+}
+
+// ── BUILD WEEKENDS ────────────────────────────────────────
+function toISO(d) {
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
-
 function buildWeekends(months) {
-  const today = new Date();
-  today.setHours(0,0,0,0);
-
-  // Start: 2 weeks ago (for fade window) — find Thursday on or before that
-  const startBase = new Date(today);
-  startBase.setDate(startBase.getDate() - 14);
-  while (startBase.getDay() !== 4) startBase.setDate(startBase.getDate() - 1);
-
-  // End: N months from today
-  const endDate = new Date(today);
-  endDate.setMonth(endDate.getMonth() + months);
-
-  const weekends = [];
-  const d = new Date(startBase);
-
-  while (d <= endDate) {
-    const thu = new Date(d);
-    const fri = new Date(d); fri.setDate(d.getDate() + 1);
-    const sat = new Date(d); sat.setDate(d.getDate() + 2);
-    const sun = new Date(d); sun.setDate(d.getDate() + 3);
-    const key = isoThursday(thu);
-
-    // Is this weekend in the past (sun < today)?
-    const isPast = sun < today;
-    // Is this the current weekend (thu <= today <= sun)?
-    const isCurrent = thu <= today && today <= sun;
-
-    weekends.push({
-      key,
-      month: MONTHS_SHORT[thu.getMonth()],
-      monthFull: MONTHS[thu.getMonth()],
-      monthNum: thu.getMonth(),
-      year: thu.getFullYear(),
-      label: `${MONTHS_SHORT[thu.getMonth()]} ${thu.getDate()} – ${MONTHS_SHORT[sun.getMonth()]} ${sun.getDate()}`,
-      thu, fri, sat, sun,
-      isPast,
-      isCurrent,
+  const today = new Date(); today.setHours(0,0,0,0);
+  const start = new Date(today); start.setDate(start.getDate()-14);
+  while (start.getDay()!==4) start.setDate(start.getDate()-1);
+  const end = new Date(today); end.setMonth(end.getMonth()+months);
+  const list = [];
+  const cur = new Date(start);
+  while (cur<=end) {
+    const thu = new Date(cur);
+    const sun = new Date(cur); sun.setDate(cur.getDate()+3);
+    list.push({
+      key:       toISO(thu),
+      monthFull: MONTHS_FULL[thu.getMonth()],
+      month:     MONTHS_SHORT[thu.getMonth()],
+      year:      thu.getFullYear(),
+      label:     `${MONTHS_SHORT[thu.getMonth()]} ${thu.getDate()} – ${MONTHS_SHORT[sun.getMonth()]} ${sun.getDate()}`,
+      isPast:    sun < today,
+      isCurrent: thu<=today && today<=sun,
     });
-
-    d.setDate(d.getDate() + 7);
+    cur.setDate(cur.getDate()+7);
   }
-  return weekends;
+  return list;
 }
 
-function ensureData() {
-  WEEKENDS.forEach(w => {
-    if (!DATA[w.key]) {
-      DATA[w.key] = SEEDS[w.key]
-        ? { ...SEEDS[w.key] }
-        : { cat: 'none', note: '', dani: 'no' };
-    }
-  });
-  saveData();
-}
+function getCat(k)  { return CATEGORIES.find(c=>c.key===k) || CATEGORIES[0]; }
+function getDani(k) { return DANI_STATES.find(d=>d.key===k) || DANI_STATES[0]; }
 
-function getCat(key) { return CATEGORIES.find(c => c.key === key) || CATEGORIES[0]; }
-function getDani(key) { return DANI_STATES.find(d => d.key === key) || DANI_STATES[0]; }
-
+// ── RENDER ────────────────────────────────────────────────
 function renderLegend() {
   document.getElementById('legend').innerHTML = CATEGORIES
-    .filter(c => c.key !== 'none')
-    .map(c => `<div class="legend-chip"><div class="legend-dot" style="background:${c.color}"></div>${c.label}</div>`)
+    .filter(c=>c.key!=='none')
+    .map(c=>`<div class="legend-chip"><div class="legend-dot" style="background:${c.color}"></div>${c.label}</div>`)
     .join('');
 }
 
-function setWindow(n) {
-  windowMonths = n;
-  [3,6,9].forEach(x => {
-    document.getElementById('btn'+x).classList.toggle('active', x === n);
+function updateStats() {
+  const future = WEEKENDS.filter(w=>!w.isPast);
+  let pl=0,fr=0,dy=0,op=0;
+  future.forEach(w => {
+    const d = DATA[w.key]||{};
+    if (d.cat&&d.cat!=='none') pl++;
+    if (d.cat==='free') fr++;
+    if (d.dani==='yes') dy++;
+    if (!d.cat||d.cat==='none') op++;
   });
-  WEEKENDS = buildWeekends(n);
-  ensureData();
-  render();
+  const tot = future.length;
+  document.getElementById('sumFree').textContent    = fr;
+  document.getElementById('sumPlanned').textContent = pl;
+  document.getElementById('sumDani').textContent    = dy;
+  document.getElementById('sumLeft').textContent    = op;
+  document.getElementById('progressFill').style.width = tot>0 ? Math.round((pl/tot)*100)+'%':'0%';
+  document.getElementById('progressLabel').textContent = `${pl} of ${tot} upcoming weekends have plans`;
+  document.getElementById('app-subtitle').textContent  = tvMode
+    ? `📺 TV Display · ${windowMonths}-month view · Live sync`
+    : `${windowMonths}-month view · Live sync — changes appear on all devices instantly`;
 }
 
 function render() {
-  const today = new Date(); today.setHours(0,0,0,0);
   const body = document.getElementById('scrollBody');
-  let html = '';
-  let lastMonthYear = null;
-  let nowInserted = false;
-  let planned = 0, free = 0, daniYes = 0, open = 0;
-
-  // Count only future+current for stats
-  const futureWeekends = WEEKENDS.filter(w => !w.isPast);
-
-  futureWeekends.forEach(w => {
-    const d = DATA[w.key];
-    if (d.cat !== 'none') planned++;
-    if (d.cat === 'free') free++;
-    if (d.dani === 'yes') daniYes++;
-    if (d.cat === 'none') open++;
-  });
-
-  const total = futureWeekends.length;
-  const pct = total > 0 ? Math.round((planned / total) * 100) : 0;
-
-  document.getElementById('sumFree').textContent = free;
-  document.getElementById('sumPlanned').textContent = planned;
-  document.getElementById('sumDani').textContent = daniYes;
-  document.getElementById('sumLeft').textContent = open;
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressLabel').textContent = `${planned} of ${total} upcoming weekends have plans`;
-  document.getElementById('app-subtitle').textContent =
-    tvMode
-      ? `📺 TV Display · ${windowMonths}-month view · Rolling · Updates automatically`
-      : `${windowMonths}-month view · Rolling · Updates automatically`;
-
-  WEEKENDS.forEach((w, i) => {
-    const d = DATA[w.key];
-    const cat = getCat(d.cat);
+  let html='', lastMY=null, nowDone=false;
+  WEEKENDS.forEach(w => {
+    const d    = DATA[w.key]||{cat:'none',note:'',dani:'no'};
+    const cat  = getCat(d.cat);
     const dani = getDani(d.dani);
-    const hasNote = d.note && d.note.trim().length > 0;
-    const monthYear = `${w.monthFull} ${w.year}`;
-
-    // Month header
-    if (monthYear !== lastMonthYear) {
-      html += `<div class="month-header">${w.monthFull.toUpperCase()} ${w.year}</div>`;
-      lastMonthYear = monthYear;
-    }
-
-    // NOW marker — insert before first non-past weekend
-    if (!nowInserted && !w.isPast) {
-      nowInserted = true;
-      html += `<div class="now-marker"><div class="now-dot"></div><div class="now-label">TODAY</div><div class="now-line"></div></div>`;
-    }
-
-    const badgeCls = d.cat === 'none' ? 'cat-none-badge' : `cat-${d.cat}`;
-    const daniEmoji = d.dani === 'yes' ? '✅' : d.dani === 'pending' ? '⏳' : '⭕';
-    const pastCls = w.isPast ? 'past' : '';
-    const curCls  = w.isCurrent ? 'today-week' : '';
-
-    html += `
-    <div class="weekend-card ${pastCls} ${curCls}" id="card-${w.key}" data-key="${w.key}">
+    const pin  = d.note&&d.note.trim().length>0;
+    const my   = `${w.monthFull} ${w.year}`;
+    if (my!==lastMY) { html+=`<div class="month-header">${w.monthFull.toUpperCase()} ${w.year}</div>`; lastMY=my; }
+    if (!nowDone&&!w.isPast) { nowDone=true; html+=`<div class="now-marker"><div class="now-dot"></div><div class="now-label">TODAY</div><div class="now-line"></div></div>`; }
+    const bc = d.cat==='none'?'cat-none-badge':'cat-'+d.cat;
+    const de = d.dani==='yes'?'✅':d.dani==='pending'?'⏳':'⭕';
+    html+=`
+    <div class="weekend-card ${w.isPast?'past':''} ${w.isCurrent?'today-week':''}" id="card-${w.key}">
       <div class="card-header" onclick="toggleCard('${w.key}')">
         <div class="cat-stripe" id="stripe-${w.key}" style="background:${cat.color}"></div>
         <div class="card-dates">
-          <div class="card-weekend-label">${hasNote ? '📌 ' : ''}${w.label}${w.isCurrent ? ' 👈' : ''}</div>
+          <div class="card-weekend-label">${pin?'📌 ':''}${w.label}${w.isCurrent?' 👈':''}</div>
           <div class="card-date-range">Thu · Fri · Sat · Sun</div>
         </div>
         <div class="card-badges">
-          <span class="cat-badge ${badgeCls}" id="badge-${w.key}">${cat.label}</span>
-          <span class="dani-badge" onclick="cycleDani(event,'${w.key}')" id="daniemoji-${w.key}">${daniEmoji}</span>
+          <span class="cat-badge ${bc}" id="badge-${w.key}">${cat.label}</span>
+          <span class="dani-badge" id="daniemoji-${w.key}" onclick="cycleDani(event,'${w.key}')">${de}</span>
           <span class="chevron">▼</span>
         </div>
       </div>
       <div class="card-body">
         <div class="field-label">Category</div>
         <select onchange="updateCat('${w.key}',this.value)">
-          ${CATEGORIES.map(c => `<option value="${c.key}"${d.cat===c.key?' selected':''}>${c.label}</option>`).join('')}
+          ${CATEGORIES.map(c=>`<option value="${c.key}"${d.cat===c.key?' selected':''}>${c.label}</option>`).join('')}
         </select>
         <div class="field-label">Notes</div>
         <textarea placeholder="Plans, events, reminders..." oninput="updateNote('${w.key}',this.value)">${d.note||''}</textarea>
@@ -583,82 +484,82 @@ function render() {
       </div>
     </div>`;
   });
-
   body.innerHTML = html;
+  updateStats();
 }
 
-function toggleCard(key) {
-  const card = document.getElementById(`card-${key}`);
-  const wasExp = card.classList.contains('expanded');
-  document.querySelectorAll('.weekend-card.expanded').forEach(c => c.classList.remove('expanded'));
-  if (!wasExp) card.classList.add('expanded');
-}
-
-function updateCat(key, val) {
+// ── INTERACTIONS ──────────────────────────────────────────
+window.toggleCard = key => {
+  const c = document.getElementById('card-'+key);
+  const was = c.classList.contains('expanded');
+  document.querySelectorAll('.weekend-card.expanded').forEach(x=>x.classList.remove('expanded'));
+  if (!was) c.classList.add('expanded');
+};
+window.updateCat = (key,val) => {
+  if (!DATA[key]) DATA[key]={cat:'none',note:'',dani:'no'};
   DATA[key].cat = val;
-  saveData();
   const cat = getCat(val);
-  document.getElementById(`stripe-${key}`).style.background = cat.color;
-  const badge = document.getElementById(`badge-${key}`);
-  badge.className = `cat-badge ${val === 'none' ? 'cat-none-badge' : 'cat-' + val}`;
-  badge.textContent = cat.label;
+  document.getElementById('stripe-'+key).style.background = cat.color;
+  const b = document.getElementById('badge-'+key);
+  b.className = 'cat-badge '+(val==='none'?'cat-none-badge':'cat-'+val);
+  b.textContent = cat.label;
   updateStats();
-}
-
-function updateNote(key, val) {
+  debouncePush(key, DATA[key]);
+};
+window.updateNote = (key,val) => {
+  if (!DATA[key]) DATA[key]={cat:'none',note:'',dani:'no'};
   DATA[key].note = val;
-  saveData();
-  const w = WEEKENDS.find(x => x.key === key);
-  const labelEl = document.querySelector(`#card-${key} .card-weekend-label`);
-  if (labelEl && w) labelEl.textContent = (val.trim() ? '📌 ' : '') + w.label + (w.isCurrent ? ' 👈' : '');
-}
-
-function cycleDani(e, key) {
+  const w = WEEKENDS.find(x=>x.key===key);
+  const el = document.querySelector(`#card-${key} .card-weekend-label`);
+  if (el&&w) el.textContent = (val.trim()?'📌 ':'')+w.label+(w.isCurrent?' 👈':'');
+  debouncePush(key, DATA[key]);
+};
+window.cycleDani = (e,key) => {
   e.stopPropagation();
-  const states = ['no','pending','yes'];
-  const cur = DATA[key].dani || 'no';
-  DATA[key].dani = states[(states.indexOf(cur) + 1) % states.length];
-  saveData();
-  const emoji = DATA[key].dani === 'yes' ? '✅' : DATA[key].dani === 'pending' ? '⏳' : '⭕';
-  document.getElementById(`daniemoji-${key}`).textContent = emoji;
-  const labelEl = document.getElementById(`dani-label-${key}`);
-  if (labelEl) {
-    const dani = getDani(DATA[key].dani);
-    labelEl.className = `dani-toggle ${dani.cls}`;
-    labelEl.textContent = dani.label;
-  }
+  if (!DATA[key]) DATA[key]={cat:'none',note:'',dani:'no'};
+  const s=['no','pending','yes'];
+  DATA[key].dani = s[(s.indexOf(DATA[key].dani||'no')+1)%3];
+  const em = DATA[key].dani==='yes'?'✅':DATA[key].dani==='pending'?'⏳':'⭕';
+  document.getElementById('daniemoji-'+key).textContent = em;
+  const lbl = document.getElementById('dani-label-'+key);
+  if (lbl) { const dn=getDani(DATA[key].dani); lbl.className='dani-toggle '+dn.cls; lbl.textContent=dn.label; }
   updateStats();
-}
-
-function updateStats() {
-  const today = new Date(); today.setHours(0,0,0,0);
-  const future = WEEKENDS.filter(w => !w.isPast);
-  let planned=0, free=0, daniYes=0, open=0;
-  future.forEach(w => {
-    const d = DATA[w.key];
-    if (d.cat !== 'none') planned++;
-    if (d.cat === 'free') free++;
-    if (d.dani === 'yes') daniYes++;
-    if (d.cat === 'none') open++;
-  });
-  const total = future.length;
-  document.getElementById('sumFree').textContent = free;
-  document.getElementById('sumPlanned').textContent = planned;
-  document.getElementById('sumDani').textContent = daniYes;
-  document.getElementById('sumLeft').textContent = open;
-  document.getElementById('progressFill').style.width = total > 0 ? Math.round((planned/total)*100)+'%' : '0%';
-  document.getElementById('progressLabel').textContent = `${planned} of ${total} upcoming weekends have plans`;
-}
-
-function initApp() {
-  DATA = loadData();
-  WEEKENDS = buildWeekends(windowMonths);
-  ensureData();
-  renderLegend();
+  pushWeekend(key, DATA[key]);
+};
+window.setWindow = n => {
+  windowMonths = n;
+  [3,6,9].forEach(x=>document.getElementById('btn'+x).classList.toggle('active',x===n));
+  WEEKENDS = buildWeekends(n);
   render();
+};
+
+// ── INIT ──────────────────────────────────────────────────
+function initApp() {
+  document.getElementById('loading-screen').classList.remove('hidden');
+  WEEKENDS = buildWeekends(windowMonths);
+  renderLegend();
+
+  onValue(weekendsRef, snapshot => {
+    const fbData = snapshot.val() || {};
+    // Seed missing weekends
+    const seeds = {};
+    WEEKENDS.forEach(w => {
+      if (!fbData[w.key]) {
+        fbData[w.key] = SEEDS[w.key] ? {...SEEDS[w.key]} : {cat:'none',note:'',dani:'no'};
+        seeds[`weekends/${w.key}`] = fbData[w.key];
+      }
+    });
+    if (Object.keys(seeds).length>0) update(ref(db), seeds);
+    DATA = fbData;
+    document.getElementById('loading-screen').classList.add('hidden');
+    render();
+  }, err => {
+    document.getElementById('loading-screen').classList.add('hidden');
+    showSync('error','⚠ Could not connect to sync');
+    console.error(err);
+  });
 }
 
-// Auto-init if already unlocked or in TV mode
 if (!pinLocked) initApp();
 </script>
 </body>
